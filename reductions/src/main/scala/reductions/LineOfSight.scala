@@ -27,7 +27,6 @@ object LineOfSightRunner:
     }
     println(s"parallel time: $partime")
     println(s"speedup: ${seqtime.value / partime.value}")
-    println("hi")
     val arr = Array[Float](0f, 1f, 8f, 9f)
     println(LineOfSight.upsweep(arr, 0, arr.length, 2))
 
