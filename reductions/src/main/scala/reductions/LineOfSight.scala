@@ -14,19 +14,19 @@ object LineOfSightRunner:
   ) withWarmer(Warmer.Default())
 
   def main(args: Array[String]): Unit =
-//    val length = 10000000
-//    val input = (0 until length).map(_ % 100 * 1.0f).toArray
-//    val output = new Array[Float](length + 1)
-//    val seqtime = standardConfig measure {
-//      LineOfSight.lineOfSight(input, output)
-//    }
-//    println(s"sequential time: $seqtime")
-//
-//    val partime = standardConfig measure {
-//      LineOfSight.parLineOfSight(input, output, 10000)
-//    }
-//    println(s"parallel time: $partime")
-//    println(s"speedup: ${seqtime.value / partime.value}")
+    val length = 10000000
+    val input = (0 until length).map(_ % 100 * 1.0f).toArray
+    val output = new Array[Float](length + 1)
+    val seqtime = standardConfig measure {
+      LineOfSight.lineOfSight(input, output)
+    }
+    println(s"sequential time: $seqtime")
+
+    val partime = standardConfig measure {
+      LineOfSight.parLineOfSight(input, output, 10000)
+    }
+    println(s"parallel time: $partime")
+    println(s"speedup: ${seqtime.value / partime.value}")
     println("hi")
     val arr = Array[Float](0f, 1f, 8f, 9f)
     println(LineOfSight.upsweep(arr, 0, arr.length, 2))
@@ -83,7 +83,7 @@ object LineOfSight extends LineOfSightInterface:
    */
   def downsweepSequential(input: Array[Float], output: Array[Float],
     startingAngle: Float, from: Int, until: Int): Unit =
-    (from until until).foreach { index =>
+    (from until until) foreach { index =>
       if (index == from) {
         output(index) = startingAngle.max(input(index)/index)
       } else {
@@ -101,8 +101,10 @@ object LineOfSight extends LineOfSightInterface:
       case Tree.Leaf(from, until, _) =>
         downsweepSequential(input, output, startingAngle, from, until)
       case Tree.Node(left, right) =>
-        parallel(downsweep(input, output, startingAngle, left),
-          downsweep(input, output, left.maxPrevious max startingAngle, right))
+        parallel(
+          downsweep(input, output, startingAngle, left),
+          downsweep(input, output, startingAngle max left.maxPrevious, right)
+        )
     }
 
   /** Compute the line-of-sight in parallel. */
