@@ -51,7 +51,9 @@ object LineOfSight extends LineOfSightInterface:
   /** Traverses the specified part of the array and returns the maximum angle.
    */
   def upsweepSequential(input: Array[Float], from: Int, until: Int): Float =
-    (from until until).foldLeft(0f)((max, curr) => max.max(input(curr)/curr))
+    (from until until).foldLeft(0f)((max, curr) => {
+      if (curr == 0) 0f else max.max(input(curr)/curr)
+    })
 
 
 

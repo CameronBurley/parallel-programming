@@ -76,7 +76,9 @@ object ParallelParenthesesBalancing extends ParallelParenthesesBalancingInterfac
         traverse(from, until, 0, 0)
       else
         val mid = from + ((until - from) / 2)
+        println(s"from $from mid $mid until $until")
         val ((leftOpen, leftClosed), (rightOpen, rightClosed)) = parallel(reduce(from, mid), reduce(mid, until))
+        println(s"from $from mid $mid until $until " + s"left ${(leftOpen, leftClosed)} right ${(rightOpen, rightClosed)}")
         val min = Math.min(leftOpen, rightClosed)
         ((leftOpen - min) + rightOpen, (rightClosed - min) + leftClosed)
 
