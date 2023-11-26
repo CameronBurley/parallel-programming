@@ -109,7 +109,6 @@ object LineOfSight extends LineOfSightInterface:
     }
 
   /** Compute the line-of-sight in parallel. */
-  def parLineOfSight(input: Array[Float], output: Array[Float],
-    threshold: Int): Unit =
+  def parLineOfSight(input: Array[Float], output: Array[Float], threshold: Int): Unit =
     val tree = upsweep(input, 1, input.length, threshold)
     downsweep(input, output, 0, tree)
